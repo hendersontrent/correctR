@@ -1,0 +1,27 @@
+Package: correctR
+Type: Package
+Title: Corrections For Correlated Test Statistics
+Version: 0.1.0
+Date: 2022-12-16
+Authors@R: c(
+  person("Trent", "Henderson", email = "then6675@uni.sydney.edu.au", role = c("cre", "aut"))
+  )
+Maintainer: Trent Henderson <then6675@uni.sydney.edu.au>
+Description: More about what it does (maybe more than one line)
+    Use four spaces when indenting paragraphs within the Description.
+BugReports: https://github.com/hendersontrent/correctR/issues
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Depends: 
+    R (>= 3.5.0)
+Imports: 
+    stats
+Suggests: 
+    knitr,
+    markdown,
+    rmarkdown,
+    pkgdown,
+    testthat
+RoxygenNote: 7.2.2
+VignetteBuilder: knitr

@@ -1,0 +1,22 @@
+---
+output: rmarkdown::github_document
+---
+
+Corrections for correlated test statistics
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  comment = NA, fig.width = 12, fig.height = 8, cache = FALSE)
+```
+
+## Installation
+
+You can install `correctR` from GitHub:
+
+```{r eval = FALSE}
+devtools::install_github("hendersontrent/theft")
+```
+
+## General purpose
+
+XX
