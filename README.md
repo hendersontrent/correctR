@@ -22,9 +22,12 @@ purpose of these methods is to either aid generalisability of findings
 (i.e., through quantification of error as they produce multiple values
 for each model instead of just one) or to optimise model
 hyperparameters. This makes them invaluable, but unusable with
-comparative approaches such as a $t$-test. `correctR` is a lightweight
-package that implements a small number of corrected test statistics for
-cases when samples are not independent (and therefore are correlated),
-such as in the case of resampling and $k$-fold cross-validation. These
-corrections were all originally proposed by [Nadeau and Bengio
+comparative approaches such as a $t$-test, as [Dietterich
+(2005)](https://pubmed.ncbi.nlm.nih.gov/9744903/) found that the
+standard $t$-test underestimates the variance, therefore driving a high
+Type I error. `correctR` is a lightweight package that implements a
+small number of corrected test statistics for cases when samples are not
+independent (and therefore are correlated), such as in the case of
+resampling and $k$-fold cross-validation. These corrections were all
+originally proposed by [Nadeau and Bengio
 (2003)](https://link.springer.com/article/10.1023/A:1024068626366).
