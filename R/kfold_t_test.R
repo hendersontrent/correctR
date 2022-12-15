@@ -1,7 +1,7 @@
 #' Compute correlated t-statistic and p-value for k-fold cross-validated results
 #' @importFrom stats var pt
-#' @param x \code{numeric} vector of classification accuracy values for classifier A
-#' @param y \code{numeric} vector of classification accuracy values for classifier B
+#' @param x \code{numeric} vector of values for model A
+#' @param y \code{numeric} vector of values for model B
 #' @param n \code{integer} denoting total sample size
 #' @param k \code{integer} denoting number of folds used in k-fold
 #' @return object of class \code{data.frame}
