@@ -37,7 +37,7 @@ rep.kfold.t.test <- function(data, n1, n2, k, r){
     stop("data should be a data.frame with only numerical values in columns 'values', 'k', and 'r'.")
   }
 
-  if(!is.numeric(n1) !is.numeric(n2) | !is.numeric(k) !is.numeric(r) |
+  if(!is.numeric(n1) | !is.numeric(n2) | !is.numeric(k) | !is.numeric(r) |
      length(n1) != 1 | length(n2) != 1 | length(k) != 1 | length(r) != 1){
     stop("n1, n2, k, and r should all be integer scalars.")
   }
