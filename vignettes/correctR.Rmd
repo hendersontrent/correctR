@@ -1,0 +1,107 @@
+---
+title: "Introduction to correctR"
+author: "Trent Henderson"
+date: "`r Sys.Date()`"
+output: 
+  rmarkdown::html_vignette:
+    toc: true
+    toc_depth: 3
+vignette: >
+  %\VignetteIndexEntry{Introduction to correctR}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  fig.height = 7,
+  fig.width = 9
+)
+```
+
+```{r, message = FALSE, warning = FALSE}
+library(correctR)
+```
+
+## Introduction
+
+`correctR` is a lightweight package that implements a small number of corrected test statistics for cases when samples of two machine learning model metrics (e.g., classification accuracy) are not independent (and therefore are correlated), such as in the case of resampling and $k$-fold cross-validation. We demonstrate the basic functionality here using some trivial examples for the following corrected tests that are currently implemented in `correctR`:
+
+* Random subsampling
+* $k$-fold cross-validation
+* Repeated $k$-fold cross-validation
+
+These corrections were all originally proposed by Nadeau and Bengio (2003)^[Nadeau, C., and Bengio, Y. Inference for the Generalization Error. Machine Learning, 52, 239-281, (2003).] with additional representations in Bouckaert and Frank (2004)^[Bouckaert, R. R., and Frank, E. Evaluating the Replicability of Significance Tests for Comparing Learning Algorithms. Advances in Knowledge Discovery and Data Mining. PAKDD 2004. Lecture Notes in Computer Science, 3056, (2004).].
+
+### Random subsampling correction
+
+In random subsampling, the standard $t$-test inflates Type I error when used in conjunction with random subsampling due to an underestimation of the variance, as found by Dietterich (1998)^[Dietterich, T. G. (1998). Approximate Statistical Tests for Comparing Supervised Classification Learning Algorithms. Neural Computation, 10(7)]. Nadeau and Bengio (2003) proposed a solution (which we implement as `resampled_ttest` in `correctR`) in the form of:
+
+$$
+t = \frac{\frac{1}{n} \sum_{j=1}^{n}x_{j}}{\sqrt{(\frac{1}{n} + \frac{n_{2}}{n_{1}})\sigma^{2}}}
+$$
+
+where $n$ is the number of resamples (NOTE: $n$ is *not* sample size), $n_{1}$ is the number of samples in the training data, and $n_{2}$ is the number of samples in the test data. $\sigma^{2}$ is the variance estimate used in the standard paired $t$-test (which simply has $\frac{\sigma}{\sqrt{n}}$ in the denominator where $n$ is the sample size in this case).
+
+### k-fold cross-validation correction
+
+There is an alternate formulation of the random subsampling correction, devised in terms of the unbiased estimator $\rho$, discussed in Corani et al. (2016)^[Corani, G., Benavoli, A., Demsar, J., Mangili, F., and Zaffalon, M. Statistical comparison of classifiers through Bayesian hierarchical modelling. Machine Learning, 106, (2017).] which we implement as `kfold_tttest` in `correctR`:
+
+$$
+t = \frac{\frac{1}{n} \sum_{j=1}^{n}x_{j}}{\sqrt{(\frac{1}{n} + \frac{\rho}{1-\rho})\sigma^{2}}}
+$$
+
+where $n$ is the number of resamples and $\rho = \frac{1}{k}$ where $k$ is the number of folds in the $k$-fold cross-validation procedure. This formulation stems from the fact that Nadeau and Bengio (2003) proved there is no unbiased estimator, but it can be approximated with $\rho = \frac{1}{k}$.
+
+### Repeated k-fold cross-validation correction
+
+Repeated $k$-fold cross-validation is more complex than the previous case(s) as we now have $r$ repeats for every fold $k$. Bouckaert and Frank (2004) present a nice representation of the corrected test for this case which we implement as `repkfold_ttest` in `correctR`:
+
+$$
+t = \frac{\frac{1}{k \cdot r} \sum_{i=1}^{k} \sum_{j=1}^{r} x_{ij}}{\sqrt{(\frac{1}{k \cdot r} + \frac{n_{2}}{n_{1}})\sigma^{2}}}
+$$
+
+## Setup
+
+In the real world, we would have proper results obtained through fitting two models according to one or more of the procedures outlined above. For simplicity here, we are just going to simulate three datasets so we can get to the package functionality cleaner and easier. We are going to assume we are in a classification context and generate classification accuracy values. These values are purposefully egregious---we are going to (in the case of the random subsampling) just fix the train set sample size (`n2`) to 80 and the test set sample size to 20, and assume (using the same data) for the $k$-fold cross-validation correction that the same numbers were obtained on such a method. Again, the values are not important here, it is the corrections we are going to apply next that are crucial.
+
+In the case of repeated $k$-fold cross-validation, take note of the column names. While your `data.frame` you pass in to `repkfold_ttest` can have more than the four columns specified here, it **must** contain at least these four with the exact corresponding names. The function explicitly searches for them. They are:
+
+1. `"model"` --- contains a label for each of the two models to compare
+2. `"values"` --- the numerical values of the performance metric (i.e., classification accuracy)
+3. `"k"` --- which fold the values correspond to
+4. `"r"` --- which repeat of the fold the values correspond to
+
+```{r, message = FALSE, warning = FALSE}
+set.seed(123) # For reproducibility
+
+# Data for random subsampling and k-fold cross-validation corrections
+
+x <- stats::rnorm(30, mean = 0.6, sd = 0.1)
+y <- stats::rnorm(30, mean = 0.4, sd = 0.1)
+
+# Data for repeated k-fold cross-validation correction
+
+tmp <- data.frame(model = rep(c(1, 2), each = 60),
+                  values = c(stats::rnorm(60, mean = 0.6, sd = 0.1), 
+                             stats::rnorm(60, mean = 0.4, sd = 0.1)),
+                  k = rep(c(1, 1, 2, 2), times = 15),
+                  r = rep(c(1, 2), times = 30))
+```
+
+## Package functionality
+
+We can fit all the corrections in one-line functions:
+
+```{r, message = FALSE, warning = FALSE}
+rss <- resampled_ttest(x = x, y = y, n = 30, n1 = 80, n2 = 20) # Random subsampling
+kcv <- kfold_ttest(x = x, y = y, n = 100, k = 30) # k-fold cross-validation
+rkcv <- repkfold_ttest(data = tmp, n1 = 80, n2 = 20, k = 2, r = 2) # Repeated k-fold cross-validation
+```
+
+All the functions return a `data.frame` with two named columns: `"statistic"` (the $t$-statistic) and `"p.value"` (the associated $p$-value), meaning they can be easily integrated into complex machine pipelines. Here is an example for `resampled.t.test`:
+
+```{r, message = FALSE, warning = FALSE}
+print(rss)
+```

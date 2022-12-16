@@ -1,0 +1,30 @@
+Package: correctR
+Type: Package
+Title: Corrections For Correlated Test Statistics
+Version: 0.1.0
+Date: 2022-12-16
+Authors@R: c(
+  person("Trent", "Henderson", email = "then6675@uni.sydney.edu.au", role = c("cre", "aut"))
+  )
+Maintainer: Trent Henderson <then6675@uni.sydney.edu.au>
+Description: Calculate a set of corrected test statistics for cases when samples
+    are not independent, such as when classification accuracy values are obtained
+    over resamples or through k-fold cross-validation, as proposed by Nadeau and Bengio (2003) <doi:10.1023/A:1024068626366> 
+    and presented in Bouckaert and Frank (2004) <doi:10.1007/978-3-540-24775-3_3>.
+BugReports: https://github.com/hendersontrent/correctR/issues
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Depends: 
+    R (>= 3.5.0)
+Imports: 
+    stats
+Suggests: 
+    knitr,
+    markdown,
+    rmarkdown,
+    pkgdown,
+    testthat (>= 3.0.0)
+RoxygenNote: 7.2.2
+VignetteBuilder: knitr
+Config/testthat/edition: 3
