@@ -1,0 +1,24 @@
+---
+title: "Introduction to correctR"
+author: "Trent Henderson"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Introduction to correctR}
+%\VignetteEngine{knitr::knitr}
+%\usepackage[UTF-8]{inputenc}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  fig.height = 7,
+  fig.width = 9
+)
+```
+
+```{r, message = FALSE, warning = FALSE}
+library(correctR)
+```
+
+`correctR` is a lightweight package that implements a small number of corrected test statistics for cases when samples of two machine learning model metrics (e.g., classification accuracy) are not independent (and therefore are correlated), such as in the case of resampling and $k$-fold cross-validation.
