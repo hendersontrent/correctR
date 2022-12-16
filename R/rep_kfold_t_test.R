@@ -4,7 +4,7 @@
 #' @param y \code{numeric} vector of values for model B
 #' @param n \code{integer} denoting total sample size
 #' @param k \code{integer} denoting number of folds used in k-fold
-#' @param r \code{integer} denoting number
+#' @param r \code{integer} denoting number of repeates per fold
 #' @return object of class \code{data.frame}
 #' @references Nadeau, C., and Bengio, Y. Inference for the Generalization Error. Machine Learning 52, (2003).
 #' @author Trent Henderson
