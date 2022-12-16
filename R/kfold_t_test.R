@@ -6,6 +6,7 @@
 #' @param k \code{integer} denoting number of folds used in k-fold
 #' @return object of class \code{data.frame}
 #' @references Nadeau, C., and Bengio, Y. Inference for the Generalization Error. Machine Learning 52, (2003).
+#' @references Corani, G., Benavoli, A., Demsar, J., Mangili, F., and Zaffalon, M. Statistical comparison of classifiers through Bayesian hierarchical modelling. Machine Learning, 106, (2017).
 #' @author Trent Henderson
 #' @export
 #'
