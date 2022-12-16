@@ -43,7 +43,7 @@ repkfold_ttest <- function(data, n1, n2, k, r){
     stop("n1, n2, k, and r should all be integer scalars.")
   }
 
-  if(length(unique(tmp$model)) != 2){
+  if(length(unique(data$model)) != 2){
     stop("Column 'model' in data should only have two unique labels (one for each model to compare).")
   }
 
