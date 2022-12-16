@@ -21,24 +21,38 @@ knitr::opts_chunk$set(
 library(correctR)
 ```
 
-`correctR` is a lightweight package that implements a small number of corrected test statistics for cases when samples of two machine learning model metrics (e.g., classification accuracy) are not independent (and therefore are correlated), such as in the case of resampling and $k$-fold cross-validation. We demonstrate the basic functionality here using some trivial examples.
+`correctR` is a lightweight package that implements a small number of corrected test statistics for cases when samples of two machine learning model metrics (e.g., classification accuracy) are not independent (and therefore are correlated), such as in the case of resampling and $k$-fold cross-validation. We demonstrate the basic functionality here using some trivial examples for the following corrected tests that are currently implemented in `correctR`:
+
+* Random subsampling
+* $k$-fold cross-validation
+* Repeated $k$-fold cross-validation
 
 ## Setup
 
-In the real world, we would have properly generated results from two models through random subsampling, $k$-fold cross-validation, or repeated $k$-fold cross-validation. However, for simplicity here, we are just going to simulate three datasets so we can get to the package functionality cleaner and easier. We are going to assume we are in a classification context and generate classification accuracy values.
+In the real world, we would have properly generated results from two models through random subsampling, $k$-fold cross-validation, or repeated $k$-fold cross-validation. However, for simplicity here, we are just going to simulate three datasets so we can get to the package functionality cleaner and easier. We are going to assume we are in a classification context and generate classification accuracy values. These values are purposefully egregious---we are going to (in the case of the random subsampling) just fix the train set sample size (`n2`) to 80 and the test set sample size to 20, and assume (using the same data) for the $k$-fold cross-validation correction that the same numbers were obtained on such a method. Again, the values are not important here, it's the formulas of the corrections we are going to apply next that are.
+
+In the case of repeated $k$-fold cross-validation, take note of the column names. While your `data.frame` you pass in can have more than the four specified here, it **must** contain at least these four with the corresponding names. The function explicitly searches for them. They are:
+
+1. `"model"` --- contains a label for each of the two models to compare
+2. `"values"` --- the numerical values of the performance metric (i.e., classification accuracy)
+3. `"k"` --- which fold the values correspond to
+4. `"r"` --- which repeat of the fold the values correspond to
 
 ```{r, message = FALSE, warning = FALSE}
-# Data for random subsampling correction
+set.seed(123) # For reproducibility
 
-x
+# Data for random subsampling and k-fold cross-validation corrections
 
-# Data for k-fold cross-validation correction
-
-x
+x <- stats::rnorm(30, mean = 0.6, sd = 0.1)
+y <- stats::rnorm(30, mean = 0.4, sd = 0.1)
 
 # Data for repeated k-fold cross-validation correction
 
-x
+tmp <- data.frame(model = rep(c(1, 2), each = 60),
+                  values = c(stats::rnorm(60, mean = 0.6, sd = 0.1), 
+                             stats::rnorm(60, mean = 0.4, sd = 0.1)),
+                  k = rep(c(1, 1, 2, 2), times = 15),
+                  r = rep(c(1, 2), times = 30))
 ```
 
 ## Package functionality
