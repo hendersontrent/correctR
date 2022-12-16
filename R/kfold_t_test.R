@@ -22,7 +22,7 @@ kfold.t.test <- function(x, y, n = length(x), k){
     stop("x and y should be numeric vectors of the same length.")
   }
 
-  if(!is.numeric(n) | !is.numeric(k)){
+  if(!is.numeric(n) | !is.numeric(k) | length(n) != 1 | length(k) != 1){
     stop("n and k should be integer scalars.")
   }
 

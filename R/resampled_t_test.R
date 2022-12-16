@@ -23,8 +23,9 @@ resampled.t.test <- function(x, y, n = length(x), n1, n2){
     stop("x and y should be numeric vectors of the same length.")
   }
 
-  if(!is.numeric(n) | !is.numeric(n1) !is.numeric(n2)){
-    stop("n, n1, and n1 should all be integer scalars.")
+  if(!is.numeric(n) | !is.numeric(n1) !is.numeric(n2) |
+     length(n) != 1 | length(n1) != 1 | length(n2) != 1){
+    stop("n, n1, and n2 should all be integer scalars.")
   }
 
   # Calculations
