@@ -7,6 +7,7 @@
 #' @param r \code{integer} denoting number of repeats per fold
 #' @return object of class \code{data.frame}
 #' @references Nadeau, C., and Bengio, Y. Inference for the Generalization Error. Machine Learning 52, (2003).
+#' @references Bouckaert, R. R., and Frank, E. Evaluating the Replicability of Significance Tests for Comparing Learning Algorithms. Advances in Knowledge Discovery and Data Mining. PAKDD 2004. Lecture Notes in Computer Science, 3056, (2004).
 #' @author Trent Henderson
 #' @export
 #'

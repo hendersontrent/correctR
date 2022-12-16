@@ -9,7 +9,8 @@ Authors@R: c(
 Maintainer: Trent Henderson <then6675@uni.sydney.edu.au>
 Description: Calculate a set of corrected test statistics for cases when samples
     are not independent, such as when classification accuracy values are obtained
-    over resamples or through k-fold cross-validation, as proposed by Nadeau and Bengio (2003) <doi:10.1023/A:1024068626366>.
+    over resamples or through k-fold cross-validation, as proposed by Nadeau and Bengio (2003) <doi:10.1023/A:1024068626366> 
+    and presented in Bouckaert and Frank (2004) <doi:10.1007/978-3-540-24775-3_3>.
 BugReports: https://github.com/hendersontrent/correctR/issues
 License: MIT + file LICENSE
 Encoding: UTF-8
