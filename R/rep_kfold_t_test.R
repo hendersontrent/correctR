@@ -2,16 +2,17 @@
 #' @importFrom stats var pt
 #' @param x \code{numeric} vector of values for model A
 #' @param y \code{numeric} vector of values for model B
-#' @param n \code{integer} denoting total sample size
+#' @param n1 \code{integer} denoting train set size
+#' @param n2 \code{integer} denoting test set size
 #' @param k \code{integer} denoting number of folds used in k-fold
-#' @param r \code{integer} denoting number of repeates per fold
+#' @param r \code{integer} denoting number of repeats per fold
 #' @return object of class \code{data.frame}
 #' @references Nadeau, C., and Bengio, Y. Inference for the Generalization Error. Machine Learning 52, (2003).
 #' @author Trent Henderson
 #' @export
 #'
 
-rep.kfold.t.test <- function(x, y, n = length(x), k, r){
+rep.kfold.t.test <- function(x, y, n1, n2, k, r){
 
   # Arg checks
 
@@ -23,9 +24,9 @@ rep.kfold.t.test <- function(x, y, n = length(x), k, r){
     stop("x and y should be numeric vectors of the same length.")
   }
 
-  if(!is.numeric(n) | !is.numeric(k) !is.numeric(r) |
-     length(n) != 1 | length(k) != 1 | length(r) != 1){
-    stop("n, k, and r should all be integer scalars.")
+  if(!is.numeric(n1) !is.numeric(n2) | !is.numeric(k) !is.numeric(r) |
+     length(n1) != 1 | length(n2) != 1 | length(k) != 1 | length(r) != 1){
+    stop("n1, n2, k, and r should all be integer scalars.")
   }
 
   # Calculations
