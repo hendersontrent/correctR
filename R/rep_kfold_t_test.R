@@ -1,7 +1,6 @@
 #' Compute correlated t-statistic and p-value for repeated k-fold cross-validated results
 #' @importFrom stats var pt
-#' @param x \code{numeric} vector of values for model A
-#' @param y \code{numeric} vector of values for model B
+#' @param data \code{data.frame} of values for model A and model B over repeated k-fold cross-validation. Three named columns are expected:
 #' @param n1 \code{integer} denoting train set size
 #' @param n2 \code{integer} denoting test set size
 #' @param k \code{integer} denoting number of folds used in k-fold
@@ -12,16 +11,30 @@
 #' @export
 #'
 
-rep.kfold.t.test <- function(x, y, n1, n2, k, r){
+rep.kfold.t.test <- function(data, n1, n2, k, r){
 
   # Arg checks
 
-  if(length(x) != length(y)){
-    stop("x and y are not the same length.")
+  '%ni%' <- Negate('%in%')
+
+  if("model" %ni% colnames(data)){
+    stop("data should contain at least four columns called 'model', 'values', 'k', and 'r'.")
   }
 
-  if(!is.numeric(x) | !is.numeric(y)){
-    stop("x and y should be numeric vectors of the same length.")
+  if("values" %ni% colnames(data)){
+    stop("data should contain at least four columns called 'model', 'values', 'k', and 'r'.")
+  }
+
+  if("k" %ni% colnames(data)){
+    stop("data should contain at least four columns called 'model', 'values', 'k', and 'r'.")
+  }
+
+  if("r" %ni% colnames(data)){
+    stop("data should contain at least four columns called 'model', 'values', 'k', and 'r'.")
+  }
+
+  if(!is.numeric(data$values) | !is.numeric(data$k) | !is.numeric(data$r)){
+    stop("data should be a data.frame with only numerical values in columns 'values', 'k', and 'r'.")
   }
 
   if(!is.numeric(n1) !is.numeric(n2) | !is.numeric(k) !is.numeric(r) |
@@ -29,11 +42,24 @@ rep.kfold.t.test <- function(x, y, n1, n2, k, r){
     stop("n1, n2, k, and r should all be integer scalars.")
   }
 
+  if(length(unique(tmp$model)) != 2){
+    stop("Column 'model' in data should only have two unique labels (one for each model to compare).")
+  }
+
   # Calculations
 
-  d <- x - y # Calculate differences
+  d <- c()
+
+  for(i in 1:k){
+    for(j in 1:r){
+      x <- data[data$k == i, ]
+      x <- x[x$r == j, ]
+      d <- c(d, x[x$model == unique(x$model)[1], c("values")] - x[x$model == unique(x$model)[2], c("values")]) # Differences
+    }
+  }
+
   sigma_2_mod <- stats::var(d, na.rm = TRUE) * (1/n + n2/n1) # Calculate modified variance
-  statistic <- mean(d, na.rm = TRUE) / sqrt(sigma_2 * ((1/n + (1/k)) / (1 - 1/k))) # Calculate t-statistic
+  statistic <- mean(d, na.rm = TRUE) / sqrt(sigma_2 * ((1/(k * r)) + (n2/n1))) # Calculate t-statistic
 
   if(statistic < 0){
     p.value <- stats::pt(statistic, n - 1) # p-value for left tail
