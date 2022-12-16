@@ -12,7 +12,7 @@
 #' @export
 #'
 
-resampled.t.test <- function(x, y, n, n1, n2){
+resampled_ttest <- function(x, y, n, n1, n2){
 
   # Arg checks
 

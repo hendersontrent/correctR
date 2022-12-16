@@ -12,7 +12,7 @@
 #' @export
 #'
 
-repkfold.t.test <- function(data, n1, n2, k, r){
+repkfold_ttest <- function(data, n1, n2, k, r){
 
   # Arg checks
 
