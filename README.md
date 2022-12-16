@@ -3,7 +3,8 @@
 
 [![DOI](https://zenodo.org/badge/578642033.svg)](https://zenodo.org/badge/latestdoi/578642033)
 
-Corrections for correlated test statistics
+Corrected test statistics for comparing machine learning models on
+correlated samples
 
 ## Installation
 
