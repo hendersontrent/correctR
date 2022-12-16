@@ -29,8 +29,7 @@ kfold.t.test <- function(x, y, n = length(x), k){
   # Calculations
 
   d <- x - y # Calculate differences
-  sigma_2_mod <- stats::var(d, na.rm = TRUE) * (1/n + n2/n1) # Calculate modified variance
-  statistic <- mean(d, na.rm = TRUE) / sqrt(sigma_2 * ((1/n + (1/k)) / (1 - 1/k))) # Calculate t-statistic
+  statistic <- mean(d, na.rm = TRUE) / sqrt(stats::var(d, na.rm = TRUE) * ((1/n + (1/k)) / (1 - 1/k))) # Calculate t-statistic
 
   if(statistic < 0){
     p.value <- stats::pt(statistic, n - 1) # p-value for left tail
