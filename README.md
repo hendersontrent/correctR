@@ -1,6 +1,8 @@
 
 # correctR
 
+[![DOI](https://zenodo.org/badge/578642033.svg)](https://zenodo.org/badge/latestdoi/578642033)
+
 Corrections for correlated test statistics
 
 ## Installation
@@ -23,7 +25,7 @@ purpose of these methods is to either aid generalisability of findings
 for each model instead of just one) or to optimise model
 hyperparameters. This makes them invaluable, but unusable with
 comparative approaches such as a $t$-test, as [Dietterich
-(2005)](https://pubmed.ncbi.nlm.nih.gov/9744903/) found that the
+(1998)](https://pubmed.ncbi.nlm.nih.gov/9744903/) found that the
 standard $t$-test underestimates the variance, therefore driving a high
 Type I error. `correctR` is a lightweight package that implements a
 small number of corrected test statistics for cases when samples are not

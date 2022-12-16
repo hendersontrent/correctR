@@ -4,6 +4,8 @@ output: rmarkdown::github_document
 
 # correctR
 
+[![DOI](https://zenodo.org/badge/578642033.svg)](https://zenodo.org/badge/latestdoi/578642033)
+
 Corrections for correlated test statistics
 
 ```{r, include = FALSE}
