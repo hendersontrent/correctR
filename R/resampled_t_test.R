@@ -12,7 +12,7 @@
 #' @export
 #'
 
-resampled.t.test <- function(x, y, n = length(x), n1, n2){
+resampled.t.test <- function(x, y, n, n1, n2){
 
   # Arg checks
 
@@ -20,20 +20,24 @@ resampled.t.test <- function(x, y, n = length(x), n1, n2){
     stop("x and y are not the same length.")
   }
 
-  if(!is.numeric(x) | !is.numeric(y)){
+  if(!is.numeric(x) || !is.numeric(y)){
     stop("x and y should be numeric vectors of the same length.")
   }
 
-  if(!is.numeric(n) | !is.numeric(n1) | !is.numeric(n2) |
-     length(n) != 1 | length(n1) != 1 | length(n2) != 1){
+  if(!is.numeric(n) || !is.numeric(n1) || !is.numeric(n2) ||
+     length(n) != 1 || length(n1) != 1 || length(n2) != 1){
     stop("n, n1, and n2 should all be integer scalars.")
+  }
+
+  if(missing(n) || is.null(n)){
+    n <- length(x)
+    message("n argument missing. Using length(x) as default.")
   }
 
   # Calculations
 
   d <- x - y # Calculate differences
-  sigma_2_mod <- stats::var(d, na.rm = TRUE) * (1/n + n2/n1) # Calculate modified variance
-  statistic <- mean(d, na.rm = TRUE) / sqrt(sigma_2_mod) # Calculate t-statistic
+  statistic <- mean(d, na.rm = TRUE) / sqrt(stats::var(d, na.rm = TRUE) * (1/n + n2/n1)) # Calculate t-statistic
 
   if(statistic < 0){
     p.value <- stats::pt(statistic, n - 1) # p-value for left tail

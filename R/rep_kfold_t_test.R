@@ -12,7 +12,7 @@
 #' @export
 #'
 
-rep.kfold.t.test <- function(data, n1, n2, k, r){
+repkfold.t.test <- function(data, n1, n2, k, r){
 
   # Arg checks
 
@@ -34,12 +34,12 @@ rep.kfold.t.test <- function(data, n1, n2, k, r){
     stop("data should contain at least four columns called 'model', 'values', 'k', and 'r'.")
   }
 
-  if(!is.numeric(data$values) | !is.numeric(data$k) | !is.numeric(data$r)){
+  if(!is.numeric(data$values) || !is.numeric(data$k) || !is.numeric(data$r)){
     stop("data should be a data.frame with only numerical values in columns 'values', 'k', and 'r'.")
   }
 
-  if(!is.numeric(n1) | !is.numeric(n2) | !is.numeric(k) | !is.numeric(r) |
-     length(n1) != 1 | length(n2) != 1 | length(k) != 1 | length(r) != 1){
+  if(!is.numeric(n1) || !is.numeric(n2) || !is.numeric(k) || !is.numeric(r) ||
+     length(n1) != 1 || length(n2) != 1 || length(k) != 1 || length(r) != 1){
     stop("n1, n2, k, and r should all be integer scalars.")
   }
 
@@ -59,13 +59,12 @@ rep.kfold.t.test <- function(data, n1, n2, k, r){
     }
   }
 
-  sigma_2_mod <- stats::var(d, na.rm = TRUE) * (1/n + n2/n1) # Calculate modified variance
-  statistic <- mean(d, na.rm = TRUE) / sqrt(sigma_2 * ((1/(k * r)) + (n2/n1))) # Calculate t-statistic
+  statistic <- mean(d, na.rm = TRUE) / sqrt(stats::var(d, na.rm = TRUE) * ((1/(k * r)) + (n2/n1))) # Calculate t-statistic
 
   if(statistic < 0){
-    p.value <- stats::pt(statistic, n - 1) # p-value for left tail
+    p.value <- stats::pt(statistic, (k * r) - 1) # p-value for left tail
   } else{
-    p.value <- stats::pt(statistic, n - 1, lower.tail = FALSE) # p-value for right tail
+    p.value <- stats::pt(statistic, (k * r) - 1, lower.tail = FALSE) # p-value for right tail
   }
 
   tmp <- data.frame(statistic = statistic, p.value = p.value)

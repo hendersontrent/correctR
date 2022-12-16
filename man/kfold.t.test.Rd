@@ -4,7 +4,7 @@
 \alias{kfold.t.test}
 \title{Compute correlated t-statistic and p-value for k-fold cross-validated results}
 \usage{
-kfold.t.test(x, y, n = length(x), k)
+kfold.t.test(x, y, n, k)
 }
 \arguments{
 \item{x}{\code{numeric} vector of values for model A}

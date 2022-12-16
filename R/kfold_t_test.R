@@ -10,7 +10,7 @@
 #' @export
 #'
 
-kfold.t.test <- function(x, y, n = length(x), k){
+kfold.t.test <- function(x, y, n, k){
 
   # Arg checks
 
@@ -18,11 +18,11 @@ kfold.t.test <- function(x, y, n = length(x), k){
     stop("x and y are not the same length.")
   }
 
-  if(!is.numeric(x) | !is.numeric(y)){
+  if(!is.numeric(x) || !is.numeric(y)){
     stop("x and y should be numeric vectors of the same length.")
   }
 
-  if(!is.numeric(n) | !is.numeric(k) | length(n) != 1 | length(k) != 1){
+  if(!is.numeric(n) || !is.numeric(k) || length(n) != 1 || length(k) != 1){
     stop("n and k should be integer scalars.")
   }
 

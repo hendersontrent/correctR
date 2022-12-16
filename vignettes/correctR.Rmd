@@ -56,7 +56,7 @@ where $n$ is the number of resamples and $\rho = \frac{1}{k}$ where $k$ is the n
 
 ### Repeated k-fold cross-validation correction
 
-Repeated $k$-fold cross-validation is more complex than the previous case(s) as we now have $r$ repeats for every fold $k$. Bouckaert and Frank (2004) present a nice representation of the corrected test for this case which we implement as `rep.kfold.t.test` in `correctR`:
+Repeated $k$-fold cross-validation is more complex than the previous case(s) as we now have $r$ repeats for every fold $k$. Bouckaert and Frank (2004) present a nice representation of the corrected test for this case which we implement as `repkfold.t.test` in `correctR`:
 
 $$
 t = \frac{\frac{1}{k \cdot r} \sum_{i=1}^{k} \sum_{j=1}^{r} x_{ij}}{\sqrt{(\frac{1}{k \cdot r} + \frac{n_{2}}{n_{1}})\sigma^{2}}}
@@ -66,7 +66,7 @@ $$
 
 In the real world, we would have proper results obtained through fitting two models according to one or more of the procedures outlined above. For simplicity here, we are just going to simulate three datasets so we can get to the package functionality cleaner and easier. We are going to assume we are in a classification context and generate classification accuracy values. These values are purposefully egregious---we are going to (in the case of the random subsampling) just fix the train set sample size (`n2`) to 80 and the test set sample size to 20, and assume (using the same data) for the $k$-fold cross-validation correction that the same numbers were obtained on such a method. Again, the values are not important here, it is the corrections we are going to apply next that are crucial.
 
-In the case of repeated $k$-fold cross-validation, take note of the column names. While your `data.frame` you pass in to `rep.kfold.t.test` can have more than the four columns specified here, it **must** contain at least these four with the exact corresponding names. The function explicitly searches for them. They are:
+In the case of repeated $k$-fold cross-validation, take note of the column names. While your `data.frame` you pass in to `repkfold.t.test` can have more than the four columns specified here, it **must** contain at least these four with the exact corresponding names. The function explicitly searches for them. They are:
 
 1. `"model"` --- contains a label for each of the two models to compare
 2. `"values"` --- the numerical values of the performance metric (i.e., classification accuracy)
@@ -97,7 +97,7 @@ We can fit all the corrections in one-line functions:
 ```{r, message = FALSE, warning = FALSE}
 rss <- resampled.t.test(x = x, y = y, n = 30, n1 = 80, n2 = 20) # Random subsampling
 kcv <- kfold.t.test(x = y, y = y, n = 100, k = 30) # k-fold cross-validation
-rkcv <- rep.kfold.t.test(data = tmp, n1 = 80, n2 = 20, k = 2, r = 2) # Repeated k-fold cross-validation
+rkcv <- repkfold.t.test(data = tmp, n1 = 80, n2 = 20, k = 2, r = 2) # Repeated k-fold cross-validation
 ```
 
 All the functions return a `data.frame` with two named columns: `"statistic"` (the $t$-statistic) and `"p.value"` (the associated $p$-value), meaning they can be easily integrated into complex machine pipelines. Here is an example for `resampled.t.test`:

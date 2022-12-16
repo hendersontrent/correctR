@@ -4,7 +4,7 @@
 \alias{resampled.t.test}
 \title{Compute correlated t-statistic and p-value for resampled data}
 \usage{
-resampled.t.test(x, y, n = length(x), n1, n2)
+resampled.t.test(x, y, n, n1, n2)
 }
 \arguments{
 \item{x}{\code{numeric} vector of values for model A}
