@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">correctR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.2</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -69,7 +69,7 @@
                         <h4 data-toc-skip class="author">Trent
 Henderson</h4>
             
-            <h4 data-toc-skip class="date">2022-12-16</h4>
+            <h4 data-toc-skip class="date">2022-12-17</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/hendersontrent/correctR/blob/HEAD/vignettes/correctR.Rmd" class="external-link"><code>vignettes/correctR.Rmd</code></a></small>
       <div class="d-none name"><code>correctR.Rmd</code></div>
@@ -171,11 +171,12 @@ so we can get to the package functionality cleaner and easier. We are
 going to assume we are in a classification context and generate
 classification accuracy values. These values are purposefully
 egregious—we are going to (in the case of the random subsampling) just
-fix the train set sample size (<code>n2</code>) to 80 and the test set
-sample size to 20, and assume (using the same data) for the <span class="math inline">\(k\)</span>-fold cross-validation correction that
-the same numbers were obtained on such a method. Again, the values are
-not important here, it is the corrections we are going to apply next
-that are crucial.</p>
+fix the train set sample size (<code>n1</code>) to 80 and the test set
+sample size (<code>n2</code>) to 20, and assume (using the same data)
+for the <span class="math inline">\(k\)</span>-fold cross-validation
+correction that the same numbers were obtained on such a method. Again,
+the values are not important here, it is the corrections we are going to
+apply next that are crucial.</p>
 <p>In the case of repeated <span class="math inline">\(k\)</span>-fold
 cross-validation, take note of the column names. While your
 <code>data.frame</code> you pass in to <code>repkfold_ttest</code> can
