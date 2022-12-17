@@ -1,5 +1,5 @@
 
-# correctR
+# correctR <img src="man/figures/correctR.png" align="right" width="120" />
 
 [![DOI](https://zenodo.org/badge/578642033.svg)](https://zenodo.org/badge/latestdoi/578642033)
 
