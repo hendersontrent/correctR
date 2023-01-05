@@ -3,6 +3,8 @@
 
 [![CRAN
 version](https://www.r-pkg.org/badges/version/correctR)](https://www.r-pkg.org/pkg/correctR)
+[![CRAN RStudio mirror
+downloads](https://cranlogs.r-pkg.org/badges/correctR)](https://www.r-pkg.org/pkg/correctR)
 [![DOI](https://zenodo.org/badge/578642033.svg)](https://zenodo.org/badge/latestdoi/578642033)
 
 Corrected test statistics for comparing machine learning models on
