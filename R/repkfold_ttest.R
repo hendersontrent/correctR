@@ -1,6 +1,6 @@
 #' Compute correlated t-statistic and p-value for repeated k-fold cross-validated results
 #' @importFrom stats var pt
-#' @param data \code{data.frame} of values for model A and model B over repeated k-fold cross-validation. Three named columns are expected:
+#' @param data \code{data.frame} of values for model A and model B over repeated k-fold cross-validation. Four named columns are expected: \code{"model"}, \code{"values"}, \code{"k"}, and \code{"k"}
 #' @param n1 \code{integer} denoting train set size
 #' @param n2 \code{integer} denoting test set size
 #' @param k \code{integer} denoting number of folds used in k-fold
@@ -18,19 +18,7 @@ repkfold_ttest <- function(data, n1, n2, k, r){
 
   '%ni%' <- Negate('%in%')
 
-  if("model" %ni% colnames(data)){
-    stop("data should contain at least four columns called 'model', 'values', 'k', and 'r'.")
-  }
-
-  if("values" %ni% colnames(data)){
-    stop("data should contain at least four columns called 'model', 'values', 'k', and 'r'.")
-  }
-
-  if("k" %ni% colnames(data)){
-    stop("data should contain at least four columns called 'model', 'values', 'k', and 'r'.")
-  }
-
-  if("r" %ni% colnames(data)){
+  if("model" %ni% colnames(data) || "values" %ni% colnames(data) || "k" %ni% colnames(data) || "r" %ni% colnames(data)){
     stop("data should contain at least four columns called 'model', 'values', 'k', and 'r'.")
   }
 
@@ -59,14 +47,22 @@ repkfold_ttest <- function(data, n1, n2, k, r){
     }
   }
 
-  statistic <- mean(d, na.rm = TRUE) / sqrt(stats::var(d, na.rm = TRUE) * ((1/(k * r)) + (n2/n1))) # Calculate t-statistic
+  # Catch for when there is zero difference(s) between the models
 
-  if(statistic < 0){
-    p.value <- stats::pt(statistic, (k * r) - 1) # p-value for left tail
+  if (sum(d) == 0) {
+    tmp <- data.frame(statistic = 0, p.value = 1)
   } else{
-    p.value <- stats::pt(statistic, (k * r) - 1, lower.tail = FALSE) # p-value for right tail
+
+    statistic <- mean(d, na.rm = TRUE) / sqrt(stats::var(d, na.rm = TRUE) * ((1/(k * r)) + (n2/n1))) # Calculate t-statistic
+
+    if(statistic < 0){
+      p.value <- stats::pt(statistic, (k * r) - 1) # p-value for left tail
+    } else{
+      p.value <- stats::pt(statistic, (k * r) - 1, lower.tail = FALSE) # p-value for right tail
+    }
+
+    tmp <- data.frame(statistic = statistic, p.value = p.value)
   }
 
-  tmp <- data.frame(statistic = statistic, p.value = p.value)
   return(tmp)
 }
