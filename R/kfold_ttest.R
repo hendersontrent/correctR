@@ -34,14 +34,22 @@ kfold_ttest <- function(x, y, n, k){
   # Calculations
 
   d <- x - y # Calculate differences
-  statistic <- mean(d, na.rm = TRUE) / sqrt(stats::var(d, na.rm = TRUE) * ((1/n + (1/k)) / (1 - 1/k))) # Calculate t-statistic
 
-  if(statistic < 0){
-    p.value <- stats::pt(statistic, n - 1) # p-value for left tail
+  # Catch for when there is zero difference(s) between the models
+
+  if (sum(d) == 0) {
+    tmp <- data.frame(statistic = 0, p.value = 1)
   } else{
-    p.value <- stats::pt(statistic, n - 1, lower.tail = FALSE) # p-value for right tail
+    statistic <- mean(d, na.rm = TRUE) / sqrt(stats::var(d, na.rm = TRUE) * ((1/n + (1/k)) / (1 - 1/k))) # Calculate t-statistic
+
+    if(statistic < 0){
+      p.value <- stats::pt(statistic, n - 1) # p-value for left tail
+    } else{
+      p.value <- stats::pt(statistic, n - 1, lower.tail = FALSE) # p-value for right tail
+    }
+
+    tmp <- data.frame(statistic = statistic, p.value = p.value)
   }
 
-  tmp <- data.frame(statistic = statistic, p.value = p.value)
   return(tmp)
 }

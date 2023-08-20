@@ -86,6 +86,11 @@
 </h2>
 <p>Often in machine learning, we want to compare the performance of different models to determine if one statistically outperforms another. However, the methods used (e.g., data resampling, <span class="math inline"><em>k</em></span>-fold cross-validation) to obtain these performance metrics (e.g., classification accuracy) violate the assumptions of traditional statistical tests such as a <span class="math inline"><em>t</em></span>-test. The purpose of these methods is to either aid generalisability of findings (i.e., through quantification of error as they produce multiple values for each model instead of just one) or to optimise model hyperparameters. This makes them invaluable, but unusable with traditional tests, as <a href="https://pubmed.ncbi.nlm.nih.gov/9744903/" class="external-link">Dietterich (1998)</a> found that the standard <span class="math inline"><em>t</em></span>-test underestimates the variance, therefore driving a high Type I error. <code>correctR</code> is a lightweight package that implements a small number of corrected test statistics for cases when samples are not independent (and therefore are correlated), such as in the case of resampling, <span class="math inline"><em>k</em></span>-fold cross-validation, and repeated <span class="math inline"><em>k</em></span>-fold cross-validation. These corrections were all originally proposed by <a href="https://link.springer.com/article/10.1023/A:1024068626366" class="external-link">Nadeau and Bengio (2003)</a>. Currently, only cases where two models are to be compared are supported.</p>
 </div>
+<div class="section level2">
+<h2 id="python-version">Python version<a class="anchor" aria-label="anchor" href="#python-version"></a>
+</h2>
+<p>A Python version of <code>correctR</code> called <code>correctipy</code> is available at the <a href="https://github.com/hendersontrent/correctipy" class="external-link">GitHub repository</a>.</p>
+</div>
 </div>
   </main><aside class="col-md-3"><div class="links">
 <h2 data-toc-skip>Links</h2>

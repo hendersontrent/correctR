@@ -7,7 +7,7 @@
 repkfold_ttest(data, n1, n2, k, r)
 }
 \arguments{
-\item{data}{\code{data.frame} of values for model A and model B over repeated k-fold cross-validation. Three named columns are expected:}
+\item{data}{\code{data.frame} of values for model A and model B over repeated k-fold cross-validation. Four named columns are expected: \code{"model"}, \code{"values"}, \code{"k"}, and \code{"k"}}
 
 \item{n1}{\code{integer} denoting train set size}
 
