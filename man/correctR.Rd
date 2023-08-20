@@ -3,6 +3,7 @@
 \docType{package}
 \name{correctR}
 \alias{correctR}
+\alias{correctR-package}
 \title{Corrections For Correlated Test Statistics}
 \description{
 Corrections For Correlated Test Statistics

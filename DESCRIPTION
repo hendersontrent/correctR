@@ -1,8 +1,8 @@
 Package: correctR
 Type: Package
 Title: Corrected Test Statistics for Comparing Machine Learning Models on Correlated Samples
-Version: 0.1.2
-Date: 2022-12-17
+Version: 0.1.3
+Date: 2023-08-20
 Authors@R: c(
   person("Trent", "Henderson", email = "then6675@uni.sydney.edu.au", role = c("cre", "aut"))
   )
