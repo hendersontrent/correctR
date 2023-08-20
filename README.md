@@ -21,7 +21,7 @@ install.packages("correctR")
 You can install the development version of `correctR` from GitHub:
 
 ``` r
-devtools::install_github("hendersontrent/correctR")
+devtools::install_github("hendersontrent/theft")
 ```
 
 ## General purpose
