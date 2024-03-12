@@ -4,7 +4,7 @@
 \alias{resampled_ttest}
 \title{Compute correlated t-statistic and p-value for resampled data}
 \usage{
-resampled_ttest(x, y, n, n1, n2)
+resampled_ttest(x, y, n, n1, n2, tailed = c("two", "one"), greater = NULL)
 }
 \arguments{
 \item{x}{\code{numeric} vector of values for model A}
@@ -16,12 +16,22 @@ resampled_ttest(x, y, n, n1, n2)
 \item{n1}{\code{integer} denoting train set size}
 
 \item{n2}{\code{integer} denoting test set size}
+
+\item{tailed}{\code{character} denoting whether to perform a two-tailed or one-tailed test. Can be one of \code{"two"} or \code{"one"}. Defaults to \code{"two"}}
+
+\item{greater}{\code{character} specifying whether \code{"x"} or \code{"y"} is greater for the one-tailed test if \code{tailed = "one"}. Defaults to \code{NULL}}
 }
 \value{
-object of class \code{data.frame}
+\code{data.frame} containing the test statistic and p-value
 }
 \description{
 Compute correlated t-statistic and p-value for resampled data
+}
+\examples{
+x <- rnorm(100, mean = 95, sd = 0.5)
+y <- rnorm(100, mean = 90, sd = 1)
+resampled_ttest(x = x, y = y, n = 100, n1 = 80, n2 = 20, tailed = "two")
+
 }
 \references{
 Nadeau, C., and Bengio, Y. Inference for the Generalization Error. Machine Learning 52, (2003).

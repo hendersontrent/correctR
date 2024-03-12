@@ -4,7 +4,7 @@
 \alias{kfold_ttest}
 \title{Compute correlated t-statistic and p-value for k-fold cross-validated results}
 \usage{
-kfold_ttest(x, y, n, k)
+kfold_ttest(x, y, n, k, tailed = c("two", "one"), greater = NULL)
 }
 \arguments{
 \item{x}{\code{numeric} vector of values for model A}
@@ -14,12 +14,22 @@ kfold_ttest(x, y, n, k)
 \item{n}{\code{integer} denoting total sample size}
 
 \item{k}{\code{integer} denoting number of folds used in k-fold}
+
+\item{tailed}{\code{character} denoting whether to perform a two-tailed or one-tailed test. Can be one of \code{"two"} or \code{"one"}. Defaults to \code{"two"}}
+
+\item{greater}{\code{character} specifying whether \code{"x"} or \code{"y"} is greater for the one-tailed test if \code{tailed = "one"}. Defaults to \code{NULL}}
 }
 \value{
-object of class \code{data.frame}
+\code{data.frame} containing the test statistic and p-value
 }
 \description{
 Compute correlated t-statistic and p-value for k-fold cross-validated results
+}
+\examples{
+x <- rnorm(100, mean = 95, sd = 0.5)
+y <- rnorm(100, mean = 90, sd = 1)
+kfold_ttest(x = x, y = y, n = 100, k = 5, tailed = "two")
+
 }
 \references{
 Nadeau, C., and Bengio, Y. Inference for the Generalization Error. Machine Learning 52, (2003).

@@ -4,7 +4,7 @@
 \alias{repkfold_ttest}
 \title{Compute correlated t-statistic and p-value for repeated k-fold cross-validated results}
 \usage{
-repkfold_ttest(data, n1, n2, k, r)
+repkfold_ttest(data, n1, n2, k, r, tailed = c("two", "one"), greater = NULL)
 }
 \arguments{
 \item{data}{\code{data.frame} of values for model A and model B over repeated k-fold cross-validation. Four named columns are expected: \code{"model"}, \code{"values"}, \code{"k"}, and \code{"k"}}
@@ -16,12 +16,26 @@ repkfold_ttest(data, n1, n2, k, r)
 \item{k}{\code{integer} denoting number of folds used in k-fold}
 
 \item{r}{\code{integer} denoting number of repeats per fold}
+
+\item{tailed}{\code{character} denoting whether to perform a two-tailed or one-tailed test. Can be one of \code{"two"} or \code{"one"}. Defaults to \code{"two"}}
+
+\item{greater}{value specifying which value in the \code{"model"} column is greater for the one-tailed test if \code{tailed = "one"}. Defaults to \code{NULL}}
 }
 \value{
-object of class \code{data.frame}
+\code{data.frame} containing the test statistic and p-value
 }
 \description{
 Compute correlated t-statistic and p-value for repeated k-fold cross-validated results
+}
+\examples{
+tmp <- data.frame(model = rep(c(1, 2), each = 60),
+  values = c(stats::rnorm(60, mean = 0.6, sd = 0.1),
+  stats::rnorm(60, mean = 0.4, sd = 0.1)),
+  k = rep(c(1, 1, 2, 2), times = 15),
+  r = rep(c(1, 2), times = 30))
+
+repkfold_ttest(data = tmp, n1 = 80, n2 = 20, k = 2, r = 2, tailed = "two")
+
 }
 \references{
 Nadeau, C., and Bengio, Y. Inference for the Generalization Error. Machine Learning 52, (2003).
