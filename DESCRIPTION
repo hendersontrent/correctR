@@ -2,7 +2,7 @@ Package: correctR
 Type: Package
 Title: Corrected Test Statistics for Comparing Machine Learning Models on Correlated Samples
 Version: 0.2.1
-Date: 2024-03-13
+Date: 2024-03-14
 Authors@R: c(
   person("Trent", "Henderson", email = "then6675@uni.sydney.edu.au", role = c("cre", "aut"))
   )
@@ -14,7 +14,6 @@ Description: Calculate a set of corrected test statistics for cases when samples
 BugReports: https://github.com/hendersontrent/correctR/issues
 License: MIT + file LICENSE
 Encoding: UTF-8
-LazyData: true
 Depends: 
     R (>= 3.5.0)
 Imports: 
