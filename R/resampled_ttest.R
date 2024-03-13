@@ -71,7 +71,7 @@ resampled_ttest <- function(x, y, n, n1, n2, tailed = c("two", "one"), greater =
         return(tmp)
       } else{
         statistic <- mean(d, na.rm = TRUE) / sqrt(stats::var(d, na.rm = TRUE) * (1 / n + n2 / n1))
-        p.value <- stats::pt(statistic, n - 1, lower.tail = TRUE)
+        p.value <- stats::pt(statistic, n - 1, lower.tail = FALSE)
       }
     }
 
