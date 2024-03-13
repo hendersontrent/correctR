@@ -64,7 +64,7 @@ $$
 
 ## Setup
 
-In the real world, we would have proper results obtained through fitting two models according to one or more of the procedures outlined above. For simplicity here, we are just going to simulate three datasets so we can get to the package functionality cleaner and easier. We are going to assume we are in a classification context and generate classification accuracy values. These values are purposefully egregious---we are going to (in the case of the random subsampling) just fix the train set sample size (`n1`) to 80 and the test set sample size (`n2`) to 20, and assume (using the same data) for the $k$-fold cross-validation correction that the same numbers were obtained on such a method. Again, the values are not important here, it is the corrections we are going to apply next that are crucial.
+In the real world, we would have proper results obtained through fitting two models according to one or more of the procedures outlined above. For simplicity here, we are just going to simulate three datasets so we can get to the package functionality cleaner and easier. We are going to assume we are in a classification context and generate classification accuracy values. These values are purposefully egregious---we are going to (in the case of the random subsampling) just fix the train set sample size (`n1`) to 80 and the test set sample size (`n2`) to 20, and assume (using the same data) for the $k$-fold cross-validation correction that the same numbers were obtained on such a method. Again, the values are not important here, it is the interface for performing corrections that is the focus.
 
 In the case of repeated $k$-fold cross-validation, take note of the column names. While your `data.frame` you pass in to `repkfold_ttest` can have more than the four columns specified here, it **must** contain at least these four with the exact corresponding names. The function explicitly searches for them. They are:
 
@@ -95,13 +95,32 @@ tmp <- data.frame(model = rep(c(1, 2), each = 60),
 We can fit all the corrections in one-line functions:
 
 ```{r, message = FALSE, warning = FALSE}
-rss <- resampled_ttest(x = x, y = y, n = 30, n1 = 80, n2 = 20) # Random subsampling
-kcv <- kfold_ttest(x = x, y = y, n = 100, k = 30) # k-fold cross-validation
-rkcv <- repkfold_ttest(data = tmp, n1 = 80, n2 = 20, k = 2, r = 2) # Repeated k-fold cross-validation
+rss <- resampled_ttest(x = x, y = y, n = 30, n1 = 80, n2 = 20)
+kcv <- kfold_ttest(x = x, y = y, n = 100, k = 30)
+rkcv <- repkfold_ttest(data = tmp, n1 = 80, n2 = 20, k = 2, r = 2)
 ```
 
-All the functions return a `data.frame` with two named columns: `"statistic"` (the $t$-statistic) and `"p.value"` (the associated $p$-value), meaning they can be easily integrated into complex machine pipelines. Here is an example for `resampled.t.test`:
+All the functions return a `data.frame` with two named columns: `"statistic"` (the $t$-statistic) and `"p.value"` (the associated $p$-value), meaning they can be easily integrated into complex machine pipelines. Here is an example for `resampled_ttest`:
 
 ```{r, message = FALSE, warning = FALSE}
 print(rss)
+```
+
+Note that all three functions express the hypothesis test as a two-tailed test by default. If we wanted to specify a one-tailed (directional) hypothesis, we can set `tailed = "one"` in any of the functions. Note that if we do so, we must specify the direction. In the case of `resampled_ttest` and `kfold_ttest`, this is as simple as setting `greater = "x"` if we expect $x > y$, or `greater = "y"` if we expect $y > x$, such as:
+
+```{r, message = FALSE, warning = FALSE}
+resampled_ttest(x = x, y = y, n = 30, n1 = 80, n2 = 20, 
+                tailed = "one", greater = "x")
+```
+
+```{r, message = FALSE, warning = FALSE}
+kfold_ttest(x = x, y = y, n = 100, k = 30, 
+            tailed = "one", greater = "x")
+```
+
+In the case of `repkfold_ttest`, since we have a data frame, we need to pass in the value in the `model` column which corresponds to the model we expect to demonstrate greater values, such as:
+
+```{r, message = FALSE, warning = FALSE}
+repkfold_ttest(data = tmp, n1 = 80, n2 = 20, k = 2, r = 2, 
+               tailed = "one", greater = 1)
 ```
