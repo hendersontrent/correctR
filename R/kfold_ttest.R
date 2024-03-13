@@ -54,7 +54,7 @@ kfold_ttest <- function(x, y, n, k, tailed = c("two", "one"), greater = NULL){
       return(tmp)
     } else{
       statistic <- mean(d, na.rm = TRUE) / sqrt(stats::var(d, na.rm = TRUE) * ((1 / n + (1 / k)) / (1 - 1 / k)))
-      p.value <- 2 * stats::pt(statistic, n - 1, lower.tail = TRUE)
+      p.value <- 2 * stats::pt(statistic, n - 1, lower.tail = FALSE)
     }
   } else{
     if(greater == "x"){

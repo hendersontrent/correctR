@@ -70,7 +70,7 @@ repkfold_ttest <- function(data, n1, n2, k, r, tailed = c("two", "one"), greater
       return(tmp)
     } else{
       statistic <- mean(d, na.rm = TRUE) / sqrt(stats::var(d, na.rm = TRUE) * ((1 / (k * r)) + (n2 / n1)))
-      p.value <- 2 * stats::pt(statistic, (k * r) - 1, lower.tail = TRUE)
+      p.value <- 2 * stats::pt(statistic, (k * r) - 1, lower.tail = FALSE)
     }
 
   } else{

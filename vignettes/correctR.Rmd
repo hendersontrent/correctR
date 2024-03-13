@@ -109,15 +109,18 @@ print(rss)
 Note that all three functions express the hypothesis test as a two-tailed test by default. If we wanted to specify a one-tailed (directional) hypothesis, we can set `tailed = "one"` in any of the functions. Note that if we do so, we must specify the direction. In the case of `resampled_ttest` and `kfold_ttest`, this is as simple as setting `greater = "x"` if we expect $x > y$, or `greater = "y"` if we expect $y > x$, such as:
 
 ```{r, message = FALSE, warning = FALSE}
-resampled_ttest(x = x, y = y, n = 30, n1 = 80, n2 = 20, tailed = "one", greater = "x")
+resampled_ttest(x = x, y = y, n = 30, n1 = 80, n2 = 20, 
+                tailed = "one", greater = "x")
 ```
 
 ```{r, message = FALSE, warning = FALSE}
-kfold_ttest(x = x, y = y, n = 100, k = 30, tailed = "one", greater = "x")
+kfold_ttest(x = x, y = y, n = 100, k = 30, 
+            tailed = "one", greater = "x")
 ```
 
 In the case of `repkfold_ttest`, since we have a data frame, we need to pass in the value in the `model` column which corresponds to the model we expect to demonstrate greater values, such as:
 
 ```{r, message = FALSE, warning = FALSE}
-repkfold_ttest(data = tmp, n1 = 80, n2 = 20, k = 2, r = 2, tailed = "one", greater = 1)
+repkfold_ttest(data = tmp, n1 = 80, n2 = 20, k = 2, r = 2, 
+               tailed = "one", greater = 1)
 ```
