@@ -46,8 +46,3 @@ cross-validation. These corrections were all originally proposed by
 [Nadeau and Bengio
 (2003)](https://link.springer.com/article/10.1023/A:1024068626366).
 Currently, only cases where two models are to be compared are supported.
-
-## Python version
-
-A Python version of `correctR` called `correctipy` is available at the
-[GitHub repository](https://github.com/hendersontrent/correctipy).

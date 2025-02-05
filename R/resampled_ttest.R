@@ -52,26 +52,24 @@ resampled_ttest <- function(x, y, n, n1, n2, tailed = c("two", "one"), greater =
 
   if(tailed == "two"){
     d <- x - y
-    if (sum(d) == 0) {
-      tmp <- data.frame(statistic = 0, p.value = 1)
-      return(tmp)
-    } else{
-      statistic <- mean(d, na.rm = TRUE) / sqrt(stats::var(d, na.rm = TRUE) * (1 / n + n2 / n1))
-      p.value <- 2 * stats::pt(statistic, n - 1, lower.tail = FALSE)
-    }
   } else{
     if(greater == "x"){
       d <- x - y
-      } else{
-        d <- y - x
-      }
+    } else{
+      d <- y - x
+    }
+  }
 
-      if (sum(d) == 0) {
-        tmp <- data.frame(statistic = 0, p.value = 1)
-        return(tmp)
+  if(sum(d) == 0){
+    tmp <- data.frame(statistic = 0, p.value = 1)
+    return(tmp)
+    } else{
+      statistic <- mean(d, na.rm = TRUE) / sqrt(stats::var(d, na.rm = TRUE) * (1 / n + n2 / n1))
+
+      if(tailed == "two"){
+        p.value <- 2 * stats::pt(-abs(statistic), n - 1)
       } else{
-        statistic <- mean(d, na.rm = TRUE) / sqrt(stats::var(d, na.rm = TRUE) * (1 / n + n2 / n1))
-        p.value <- stats::pt(statistic, n - 1, lower.tail = FALSE)
+        p.value <- 1 - stats::pt(statistic, n - 1)
       }
     }
 
