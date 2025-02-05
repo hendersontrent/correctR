@@ -65,12 +65,12 @@ repkfold_ttest <- function(data, n1, n2, k, r, tailed = c("two", "one"), greater
         d <- append(d, x[x$model == unique(x$model)[1], c("values")] - x[x$model == unique(x$model)[2], c("values")])
       }
     }
-    if (sum(d) == 0) {
+    if(sum(d) == 0){
       tmp <- data.frame(statistic = 0, p.value = 1)
       return(tmp)
     } else{
       statistic <- mean(d, na.rm = TRUE) / sqrt(stats::var(d, na.rm = TRUE) * ((1 / (k * r)) + (n2 / n1)))
-      p.value <- 2 * stats::pt(statistic, (k * r) - 1, lower.tail = FALSE)
+      p.value <- 2 * stats::pt(-abs(statistic), (k * r) - 1)
     }
 
   } else{
@@ -85,12 +85,12 @@ repkfold_ttest <- function(data, n1, n2, k, r, tailed = c("two", "one"), greater
       }
     }
 
-    if (sum(d) == 0) {
+    if(sum(d) == 0){
       tmp <- data.frame(statistic = 0, p.value = 1)
       return(tmp)
     } else{
       statistic <- mean(d, na.rm = TRUE) / sqrt(stats::var(d, na.rm = TRUE) * ((1 / (k * r)) + (n2 / n1)))
-      p.value <- stats::pt(statistic, (k * r) - 1, lower.tail = FALSE)
+      p.value <- 1 - stats::pt(statistic, (k * r) - 1)
     }
   }
 
