@@ -1,34 +1,89 @@
 ---
-output: rmarkdown::github_document
+output:
+  rmarkdown::github_document:
+    html_preview: false
+    pandoc_args: --wrap=preserve
 ---
 
-# correctR <img src="man/figures/correctR.png" align="right" width="120" />
+<p align="center"><img src="man/figures/correctR.png" alt="correctR logo" height="160"/></p>
 
-[![CRAN version](https://www.r-pkg.org/badges/version/correctR)](https://www.r-pkg.org/pkg/correctR)
-[![CRAN RStudio mirror downloads](https://cranlogs.r-pkg.org/badges/correctR)](https://www.r-pkg.org/pkg/correctR)
-[![DOI](https://zenodo.org/badge/578642033.svg)](https://zenodo.org/badge/latestdoi/578642033)
+<h1 align="center"><em>correctR</em>: Corrected Test Statistics for Comparing Machine Learning Models on Correlated Samples</h1>
 
-Corrected test statistics for comparing machine learning models on correlated samples
+<p align="center">
+  <a href="https://zenodo.org/badge/latestdoi/578642033"><img src="https://zenodo.org/badge/578642033.svg" alt="DOI"/></a>
+  <a href="https://github.com/hendersontrent/correctR/blob/main/LICENSE.md"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License: MIT"/></a>
+  <a href="https://hendersontrent.github.io/correctR/"><img src="https://img.shields.io/badge/docs-pkgdown-blue" alt="Documentation"/></a>
+  <a href="https://cran.r-project.org/package=correctR"><img src="https://www.r-pkg.org/badges/version/correctR" alt="CRAN version"/></a>
+  <a href="https://cran.r-project.org/package=correctR"><img src="https://cranlogs.r-pkg.org/badges/correctR" alt="CRAN downloads"/></a>
+</p>
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   comment = NA, fig.width = 8, fig.height = 8, cache = FALSE)
 ```
 
+_correctR_ is a lightweight R package that implements corrected test statistics for comparing the performance of two machine-learning models when the samples are not independent.
+This happens whenever performance values (e.g., classification accuracy) come from data resampling, $k$-fold cross-validation, or repeated $k$-fold cross-validation.
+These methods give several values per model, which is useful for estimating error and generalizability, but the values are correlated, so a standard $t$-test underestimates the variance and inflates the Type I error ([Dietterich, 1998](https://pubmed.ncbi.nlm.nih.gov/9744903/)).
+_correctR_ implements corrections for this problem proposed by [Nadeau and Bengio (2003)](https://doi.org/10.1023/A:1024068626366), including the repeated $k$-fold form presented by [Bouckaert and Frank (2004)](https://doi.org/10.1007/978-3-540-24775-3_3).
+Currently, only comparisons of two models are supported.
+
+📖 **Full documentation:** [hendersontrent.github.io/correctR](https://hendersontrent.github.io/correctR/), including the vignette and function reference.
+
 ## Installation
 
-You can install the stable version of `correctR` from CRAN:
+Install the stable version from CRAN:
 
 ```{r eval = FALSE}
 install.packages("correctR")
 ```
 
-You can install the development version of `correctR` from GitHub:
+Or install the development version from GitHub:
 
 ```{r eval = FALSE}
 devtools::install_github("hendersontrent/correctR")
 ```
 
-## General purpose
+## Usage
 
-Often in machine learning, we want to compare the performance of different models to determine if one statistically outperforms another. However, the methods used (e.g., data resampling, $k$-fold cross-validation) to obtain these performance metrics (e.g., classification accuracy) violate the assumptions of traditional statistical tests such as a $t$-test. The purpose of these methods is to either aid generalisability of findings (i.e., through quantification of error as they produce multiple values for each model instead of just one) or to optimise model hyperparameters. This makes them invaluable, but unusable with traditional tests, as [Dietterich (1998)](https://pubmed.ncbi.nlm.nih.gov/9744903/) found that the standard $t$-test underestimates the variance, therefore driving a high Type I error. `correctR` is a lightweight package that implements a small number of corrected test statistics for cases when samples are not independent (and therefore are correlated), such as in the case of resampling, $k$-fold cross-validation, and repeated $k$-fold cross-validation. These corrections were all originally proposed by [Nadeau and Bengio (2003)](https://link.springer.com/article/10.1023/A:1024068626366). Currently, only cases where two models are to be compared are supported.
+| Function | Use when |
+|---|---|
+| `resampled_ttest()` | Performance values come from random subsampling (repeated train-test splits) |
+| `kfold_ttest()` | Performance values come from $k$-fold cross-validation |
+| `repkfold_ttest()` | Performance values come from repeated $k$-fold cross-validation |
+
+Each function returns a `data.frame` with the $t$-statistic (`statistic`) and its $p$-value (`p.value`).
+For example, to compare two models using accuracy values from 30 random train-test splits, each with 80 training and 20 test samples:
+
+```{r, message = FALSE}
+library(correctR)
+
+set.seed(123)
+x <- rnorm(30, mean = 0.6, sd = 0.1) # accuracy of model 1 on each resample
+y <- rnorm(30, mean = 0.4, sd = 0.1) # accuracy of model 2 on each resample
+
+resampled_ttest(x = x, y = y, n = 30, n1 = 80, n2 = 20)
+```
+
+Tests are two-tailed by default; set `tailed = "one"` and `greater = "x"` (or `"y"`) for a directional hypothesis.
+See the [vignette](https://hendersontrent.github.io/correctR/articles/correctR.html) for all three tests.
+
+## References
+
+The methods implemented in _correctR_ are described in:
+
+> C. Nadeau and Y. Bengio.
+> [Inference for the Generalization Error](https://doi.org/10.1023/A:1024068626366).
+> _Machine Learning_ **52**, 239-281 (2003).
+
+and, for the repeated $k$-fold correction:
+
+> R. R. Bouckaert and E. Frank.
+> [Evaluating the Replicability of Significance Tests for Comparing Learning Algorithms](https://doi.org/10.1007/978-3-540-24775-3_3).
+> _Advances in Knowledge Discovery and Data Mining (PAKDD 2004)_, Lecture Notes in Computer Science **3056** (2004).
+
+The software is archived on Zenodo: [10.5281/zenodo.7445136](https://doi.org/10.5281/zenodo.7445136).
+
+## License
+
+_correctR_ is licensed under the [MIT License](LICENSE.md).
